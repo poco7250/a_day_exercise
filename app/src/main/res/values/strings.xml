@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">A_day_exercise</string>
+    <string name="success_login">구글 로그인 성공</string>
+    <string name="failed_login">구글 로그인 실패</string>
+    <string name="success_logout">로그아웃 되었습니다</string>
+    <string name="status_login">이미 로그인 되어있습니다</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="home">"홈"</string>
+    <string name="record">"기록"</string>
+    <string name="statistics">"통계"</string>
+    <string name="search">"검색"</string>
+    <string name="friend">"친구"</string>
+    <string name="settings">"설정"</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
