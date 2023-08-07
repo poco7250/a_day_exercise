@@ -27,13 +27,13 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/searchFriendButton"
+            android:id="@+id/checkRequest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="140dp"
             android:layout_marginBottom="0dp"
-            android:text="친구검색" />
+            android:layout_marginLeft="130dp"
+            android:text="보관함" />
 
         <Button
             android:id="@+id/addFriendButton"
@@ -47,7 +47,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_recycler"
+        android:id="@+id/homeUserList"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

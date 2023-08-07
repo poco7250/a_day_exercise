@@ -128,34 +128,55 @@ class LoginActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun firebaseAuthWithGoogle(account : GoogleSignInAccount?){
-		val credential = GoogleAuthProvider.getCredential(account?.idToken,null)
+	private fun firebaseAuthWithGoogle(account : GoogleSignInAccount?) {
+		val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
 		Log.d("check", "${account?.idToken}")
 		auth.signInWithCredential(credential)
-			.addOnCompleteListener(this){
-					task ->
-				if(task.isSuccessful){
-						moveMainPage(task.result?.user)
-				}else{
-					// 틀렸을 때
-					Toast.makeText(this,task.exception?.message,Toast.LENGTH_SHORT).show()
-					Log.d("check", "${task.exception?.message}")
+			.addOnCompleteListener(this) { task ->
+				if (task.isSuccessful) {
+					// 아이디, 비밀번호 맞을 때
+					val user = task.result?.user
+					val uid = user?.uid
+					val email = account?.email
+					val name = account?.displayName
+					Log.d("check", "$uid")
+					Log.d("check", "$email")
+					Log.d("check", "$name")
+
+					if (email != null && name != null) {
+						val userMap = hashMapOf(
+							"email" to email,
+							"name" to name
+							// 추가적인 사용자 정보가 있다면 여기에 추가할 수 있습니다.
+						)
+						// 파이어스토어 Users 컬렉션에 사용자 정보 저장
+						val db = FirebaseFirestore.getInstance()
+						db.collection("Users").document(uid!!).set(userMap)
+							.addOnSuccessListener {
+								// 저장 성공
+								Log.d(TAG, "정보가 성공적으로 등록되었습니다.")
+								moveMainPage(task.result?.user)
+							}
+					} else {
+						// 틀렸을 때
+						Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
+						Log.d("check", "${task.exception?.message}")
+					}
 				}
 			}
-	}
 
-	fun logout() {
-		AuthUI.getInstance()
-			.signOut(this)
-			.addOnCompleteListener {
-				// 일반 로그아웃 처리
-				auth.signOut()
-				// 로그인 화면으로 이동
-				val intent = Intent(this, LoginActivity::class.java)
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-				startActivity(intent)
-				finish()
-			}
+		fun logout() {
+			AuthUI.getInstance()
+				.signOut(this)
+				.addOnCompleteListener {
+					// 일반 로그아웃 처리
+					auth.signOut()
+					// 로그인 화면으로 이동
+					val intent = Intent(this, LoginActivity::class.java)
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+					startActivity(intent)
+					finish()
+				}
+		}
 	}
-
 }
