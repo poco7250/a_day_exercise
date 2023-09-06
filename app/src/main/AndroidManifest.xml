@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.A_day_exercise"
         tools:targetApi="31">
+        <activity
+            android:name=".ModifyRoutineNameActivity"
+            android:exported="false"/>
         <activity
             android:name=".signupActivity"
             android:exported="false" />
@@ -31,7 +34,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"/>
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.poco.a_day_exercise.provider"
@@ -39,8 +43,15 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <activity
+            android:name=".AddRoutineActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".AddExerciseActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -8,32 +8,22 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/home_item_email"
+        android:id="@+id/rtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="이메일"
-        android:textColor="#8A252525"
+        android:layout_marginStart="17dp"
+        android:text="루틴 이름"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/accept"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:text="수락"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/reject"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/reject"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="6dp"
-        android:text="거절"
+        android:id="@+id/deleteRoutine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="17dp"
+        android:text="삭제"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

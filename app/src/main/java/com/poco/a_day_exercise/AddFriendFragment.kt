@@ -540,8 +540,6 @@ class AddFriendFragment : Fragment() {
 			.setView(dialogBinding.root)
 			.setCancelable(true) // 다이얼로그를 백키 눌렀을 때 종료 가능하도록 설정
 			.create()
-		val db = FirebaseFirestore.getInstance()
-		val docRef = db.collection("friendRequests").document("your_document_id")
 
 		// 현재 로그인한 사용자의 이메일을 가져옵니다.
 		val currentUserEmail = Firebase.auth.currentUser?.email
