@@ -9,6 +9,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.poco.a_day_exercise.databinding.ActivitySignupBinding
 
 class signupActivity : AppCompatActivity() {
@@ -30,28 +31,49 @@ class signupActivity : AppCompatActivity() {
 	// 계정 생성
 	private fun createAccount(email: String, password: String, name: String) {
 
-		if (email.isNotEmpty() && password.isNotEmpty()) {
-			auth?.createUserWithEmailAndPassword(email, password)
-				?.addOnCompleteListener(this) { task ->
-					if (task.isSuccessful) {
-						val user = task.result?.user
-						user?.let {
-							// 사용자 계정이 성공적으로 생성되었으므로, 파이어스토어에 사용자 정보를 저장합니다.
-							saveUserInfoToFirestore(it.uid, name, email)
-							Toast.makeText(this, "계정 생성 완료.", Toast.LENGTH_SHORT).show()
-							finish() // 가입창 종료
+		val storage = FirebaseStorage.getInstance()
+		val storageRef = storage.reference
+
+		// "user.png" 이미지에 대한 참조를 만듭니다.
+		val imageRef = storageRef.child("user.png")
+
+		imageRef
+			.downloadUrl
+			.addOnSuccessListener { uri ->
+				val imageUrl = uri.toString()
+				Log.d("checkurl", imageUrl)
+				// "user.png" 이미지의 다운로드 URL이 imageUrl 변수에 저장됩니다.
+
+				// 여기에서 imageUrl을 사용하여 필요한 작업을 수행할 수 있습니다.
+
+				if (email.isNotEmpty() && password.isNotEmpty()) {
+					auth?.createUserWithEmailAndPassword(email, password)
+						?.addOnCompleteListener(this) { task ->
+							if (task.isSuccessful) {
+								val user = task.result?.user
+								user?.let {
+									// 사용자 계정이 성공적으로 생성되었으므로, 파이어스토어에 사용자 정보를 저장합니다.
+									saveUserInfoToFirestore(it.uid, name, email, imageUrl)
+									Toast.makeText(this, "계정 생성 완료.", Toast.LENGTH_SHORT).show()
+									finish() // 가입창 종료
+								}
+							} else {
+								Toast.makeText(
+									this, "계정 생성 실패",
+									Toast.LENGTH_SHORT
+								).show()
+							}
 						}
-					} else {
-						Toast.makeText(
-							this, "계정 생성 실패",
-							Toast.LENGTH_SHORT
-						).show()
-					}
 				}
-		}
+			}
+			.addOnFailureListener { e ->
+				// 이미지 다운로드 URL 가져오기 실패
+				// 오류 처리를 수행합니다.
+				Log.w("MyTag", "이미지 불러오기 실패", e)
+			}
 	}
 
-	private fun saveUserInfoToFirestore(uid: String, name: String, email: String) {
+	private fun saveUserInfoToFirestore(uid: String, name: String, email: String, userImageURL: String) {
 		// 파이어스토어 데이터베이스를 참조합니다.
 		val db = FirebaseFirestore.getInstance()
 
@@ -61,7 +83,9 @@ class signupActivity : AppCompatActivity() {
 		// 사용자 정보를 HashMap으로 만듭니다.
 		val user = hashMapOf(
 			"name" to name,
-			"email" to email
+			"email" to email,
+			"userImageURL" to userImageURL
+
 			// 추가적인 사용자 정보가 있다면 여기에 추가할 수 있습니다.
 		)
 

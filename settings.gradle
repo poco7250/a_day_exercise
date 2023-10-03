@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "A_day_exercise"
 include ':app'
+include ':app_wear'

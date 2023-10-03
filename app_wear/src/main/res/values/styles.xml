@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ItemBorder">
-        <item name="android:background">@drawable/item_border_background</item>
-    </style>
-
     <style name="AppTheme">
         <!-- 다른 스타일 속성들 -->
         <item name="android:windowBackground">@drawable/your_background_image</item>

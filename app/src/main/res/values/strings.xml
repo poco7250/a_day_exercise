@@ -21,4 +21,10 @@
     <string name="settings">"설정"</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_modify_routine_name">ModifyRoutineNameActivity</string>
+    <string name="default_web_client_id">266606382447-ql3habqskko0ubm5fe7h2ltajqneb664.apps.googleusercontent.com</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">From the Square world,\nHello, %1$s!</string>
 </resources>

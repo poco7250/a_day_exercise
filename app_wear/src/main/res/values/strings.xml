@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">A_day_exercise_wear</string>
+    <string name="title_activity_main">ui.theme.MainActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">From the Square world,\nHello, %1$s!</string>
+    <string name="title_activity_presentation._main">presentation.MainActivity</string>
+</resources>

@@ -74,6 +74,18 @@ class MainFragment : Fragment() {
 			startActivity(intent)
 		}
 
+		binding.recordTextButton.setOnClickListener {
+			val intent = Intent(activity, DateActivity::class.java)
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+			startActivity(intent)
+		}
+
+		binding.recordWatchButton.setOnClickListener {
+			val intent = Intent(activity,  RecordWatchActivity::class.java)
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+			startActivity(intent)
+		}
+
 		// 파이어스토어에서 데이터 불러오기
 		loadRoutineNames()
 

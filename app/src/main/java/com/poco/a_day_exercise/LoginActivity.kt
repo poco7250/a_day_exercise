@@ -19,6 +19,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.poco.a_day_exercise.databinding.ActivityLoginBinding
 
 
@@ -127,56 +128,52 @@ class LoginActivity : AppCompatActivity() {
 			Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()
 		}
 	}
-
-	private fun firebaseAuthWithGoogle(account : GoogleSignInAccount?) {
+	private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
 		val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
-		Log.d("check", "${account?.idToken}")
 		auth.signInWithCredential(credential)
 			.addOnCompleteListener(this) { task ->
 				if (task.isSuccessful) {
-					// 아이디, 비밀번호 맞을 때
 					val user = task.result?.user
 					val uid = user?.uid
 					val email = account?.email
 					val name = account?.displayName
-					Log.d("check", "$uid")
-					Log.d("check", "$email")
-					Log.d("check", "$name")
 
-					if (email != null && name != null) {
-						val userMap = hashMapOf(
-							"email" to email,
-							"name" to name
-							// 추가적인 사용자 정보가 있다면 여기에 추가할 수 있습니다.
-						)
-						// 파이어스토어 Users 컬렉션에 사용자 정보 저장
+					val storage = FirebaseStorage.getInstance()
+					val storageRef = storage.reference
+					val imageRef = storageRef.child("user.png")
+
+					imageRef.downloadUrl.addOnSuccessListener { uri ->
+						val imageUrl = uri.toString()
+
+						// Firestore에서 사용자 정보 가져오기
 						val db = FirebaseFirestore.getInstance()
-						db.collection("Users").document(uid!!).set(userMap)
-							.addOnSuccessListener {
-								// 저장 성공
-								Log.d(TAG, "정보가 성공적으로 등록되었습니다.")
-								moveMainPage(task.result?.user)
+						val userRef = db.collection("Users").document(uid!!)
+
+						userRef.get().addOnSuccessListener { document ->
+							if (document.exists()) {
+								// 이미 사용자 정보가 Firestore에 있는 경우
+								// 여기서는 아무 작업도 수행하지 않고 메인 페이지로 이동
+								moveMainPage(user)
+							} else {
+								// Firestore에 사용자 정보가 없는 경우 (새로운 사용자)
+								val userMap = hashMapOf(
+									"email" to email,
+									"name" to name,
+									"userImageURL" to imageUrl
+								)
+
+								// 사용자 정보 Firestore에 추가
+								userRef.set(userMap).addOnSuccessListener {
+									// 정보 추가 성공 후 메인 페이지로 이동
+									moveMainPage(user)
+								}
 							}
-					} else {
-						// 틀렸을 때
-						Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
-						Log.d("check", "${task.exception?.message}")
+						}
+					}.addOnFailureListener { e ->
+						// 이미지 다운로드 URL 가져오기 실패
+						Log.w("MyTag", "이미지 불러오기 실패", e)
 					}
 				}
 			}
-
-		fun logout() {
-			AuthUI.getInstance()
-				.signOut(this)
-				.addOnCompleteListener {
-					// 일반 로그아웃 처리
-					auth.signOut()
-					// 로그인 화면으로 이동
-					val intent = Intent(this, LoginActivity::class.java)
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-					startActivity(intent)
-					finish()
-				}
-		}
 	}
 }

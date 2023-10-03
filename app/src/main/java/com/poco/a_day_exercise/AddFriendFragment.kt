@@ -32,20 +32,20 @@ import com.poco.a_day_exercise.databinding.ItemUserBinding
 open class Person(
 	open var email: String? = null,
 	open var name: String? = null,
-	open var profileImageUrl: String? = null
+	open var userImageURL: String? = null
 )
 
 data class Friend(
 	override var email: String? = null,
 	override var name: String? = null,
-	override var profileImageUrl: String? = null
-) : Person(email, name, profileImageUrl)
+	override var userImageURL: String? = null
+) : Person(email, name, userImageURL)
 
 data class User(
 	override var email: String? = null,
 	override var name: String? = null,
-	override var profileImageUrl: String? = null
-) : Person(email, name, profileImageUrl)
+	override var userImageURL: String? = null
+) : Person(email, name, userImageURL)
 
 data class FriendRequest(
 	val requesterEmail: String? = null, // 친구 요청을 보낸 사용자의 이메일
@@ -67,10 +67,7 @@ class AddFriendFragment : Fragment() {
 		}
 	}
 
-	private var friends: ArrayList<Friend> = arrayListOf()
-	private var users: ArrayList<User> = arrayListOf()
 	private var persons: ArrayList<Person> = arrayListOf()
-	private var requests: ArrayList<FriendRequest> = arrayListOf()
 	private val binding by lazy { FragmentAddFriendBinding.inflate(layoutInflater) } // 뷰바인딩 설정
 
 	override fun onCreateView(
@@ -88,58 +85,59 @@ class AddFriendFragment : Fragment() {
 			FirebaseFirestore.getInstance().collection("Friends")
 				.document(currentUserEmail)
 				.collection("MyFriends")
-				.get()
-				.addOnSuccessListener { querySnapshot ->
-					val friendEmails = mutableListOf<String>()
-
-					// "MyFriends" 컬렉션에서 친구들의 이메일을 가져옵니다.
-					for (document in querySnapshot) {
-						val friendEmail = document.getString("email")
-						friendEmail?.let { friendEmails.add(it) }
+				.addSnapshotListener { snapshot, e ->
+					if (e != null) {
+						Log.e(TAG, "Listen failed.", e)
+						return@addSnapshotListener
 					}
 
-					// 가져온 친구 이메일 리스트를 사용하여 "Users" 컬렉션에서 친구들의 정보를 가져옵니다.
-					val usersCollection = FirebaseFirestore.getInstance().collection("Users")
-					val friends = mutableListOf<Friend>()
+					if (snapshot != null) {
+						// 데이터가 변경될 때마다 업데이트된 데이터를 처리합니다.
+						val friendEmails = mutableListOf<String>()
+						val friends = mutableListOf<Friend>()
+						for (document in snapshot.documents) {
+							val friendEmail = document.getString("email")
+							friendEmail?.let { friendEmails.add(it) }
+						}
 
-					// 친구들의 이메일과 일치하는 사용자 문서를 조회합니다.
-					for (friendEmail in friendEmails) {
-						usersCollection.whereEqualTo("email", friendEmail)
-							.get()
-							.addOnSuccessListener { querySnapshot ->
-								// querySnapshot에서 사용자 정보를 가져와서 friends 리스트에 추가합니다.
-								for (document in querySnapshot) {
-									val friend = document.toObject<Friend>()
-									friends.add(friend)
+						// 가져온 친구 이메일 리스트를 사용하여 "Users" 컬렉션에서 친구들의 정보를 가져옵니다.
+						val usersCollection = FirebaseFirestore.getInstance().collection("Users")
+
+						// 친구들의 이메일과 일치하는 사용자 문서를 조회합니다.
+						for (friendEmail in friendEmails) {
+							usersCollection.whereEqualTo("email", friendEmail)
+								.get()
+								.addOnSuccessListener { querySnapshot ->
+									// querySnapshot에서 사용자 정보를 가져와서 friends 리스트에 추가합니다.
+									for (document in querySnapshot) {
+										val friend = document.toObject<Friend>()
+										friends.add(friend)
+									}
+
+									// RecyclerView Adapter 설정
+									val adapter = RecyclerViewFriendAdapter(friends)
+									binding.homeUserList.layoutManager =
+										LinearLayoutManager(requireContext())
+									binding.homeUserList.adapter = adapter
+									adapter.notifyDataSetChanged()
 								}
+								.addOnFailureListener { e ->
+									// "Users" 컬렉션 조회 실패에 대한 처리
+									Log.e(TAG, "Error fetching user document", e)
+								}
+						}
 
-								// RecyclerView Adapter 설정
-								val adapter = RecyclerViewFriendAdapter(friends)
-								binding.homeUserList.layoutManager = LinearLayoutManager(requireContext())
-								binding.homeUserList.adapter = adapter
-								adapter.notifyDataSetChanged()
-							}
-							.addOnFailureListener { e ->
-								// "Users" 컬렉션 조회 실패에 대한 처리
-								Log.e(TAG, "Error fetching user document", e)
-							}
-					}
+						// 친구추가 버튼 리스너
+						binding.addFriendButton.setOnClickListener {
+							showAddFriendDialog()
+						}
 
-					// 친구추가 버튼 리스너
-					binding.addFriendButton.setOnClickListener {
-						showAddFriendDialog()
+						binding.checkRequest.setOnClickListener {
+							showAddFriendRequestsDialog()
+						}
 					}
-
-					binding.checkRequest.setOnClickListener {
-						showAddFriendRequestsDialog()
-					}
-				}
-				.addOnFailureListener { e ->
-					// "MyFriends" 컬렉션 조회 실패에 대한 처리
-					Log.e(TAG, "Error fetching my friends", e)
 				}
 		}
-
 		return view
 	}
 
@@ -226,7 +224,7 @@ class AddFriendFragment : Fragment() {
 				// 친구가 있는 경우 친구 정보를 보여줍니다.
 				val currentItem = filteredItems[position]
 				Glide.with(holder.itemView.context)
-					.load(currentItem.profileImageUrl)
+					.load(currentItem.userImageURL)
 					.circleCrop()
 					.into(holder.imageView)
 				holder.textView.text = currentItem.name
@@ -327,14 +325,20 @@ class AddFriendFragment : Fragment() {
 				holder.textViewEmail.text = currentItem.requesterEmail
 				holder.acceptButton.setOnClickListener {
 					acceptFriendRequest(currentItem.requesterEmail!!)
-					items = items.filterNot { it.requesterEmail == currentItem.requesterEmail }
-					notifyDataSetChanged()
+					val positionToRemove = filteredItems.indexOf(currentItem)
+					if (positionToRemove != -1) {
+						filteredItems.removeAt(positionToRemove)
+						notifyItemRemoved(positionToRemove)
+					}
 				}
+
 				holder.rejectButton.setOnClickListener {
 					rejectFriendRequest(currentItem.requesterEmail!!)
-					// 친구 요청을 거절한 뒤에 데이터를 새로운 데이터로 갱신합니다.
-					items = items.filterNot { it.requesterEmail == currentItem.requesterEmail }
-					notifyDataSetChanged()
+					val positionToRemove = filteredItems.indexOf(currentItem)
+					if (positionToRemove != -1) {
+						filteredItems.removeAt(positionToRemove)
+						notifyItemRemoved(positionToRemove)
+					}
 				}
 			}
 		}
@@ -431,7 +435,7 @@ class AddFriendFragment : Fragment() {
 				// 친구가 있는 경우 친구 정보를 보여줍니다.
 				val currentItem = filteredItems[position]
 				Glide.with(holder.itemView.context)
-					.load(currentItem.profileImageUrl)
+					.load(currentItem.userImageURL)
 					.circleCrop()
 					.into(holder.imageView)
 				holder.textView.text = currentItem.name
@@ -439,6 +443,11 @@ class AddFriendFragment : Fragment() {
 				holder.imageView.visibility = View.VISIBLE
 				holder.addFriend.setOnClickListener {
 					sendFriendRequest(currentItem.email!!)
+					val positionToRemove = filteredItems.indexOf(currentItem)
+					if (positionToRemove != -1) {
+						filteredItems.removeAt(positionToRemove)
+						notifyItemRemoved(positionToRemove)
+					}
 				}
 			}
 		}
@@ -476,30 +485,47 @@ class AddFriendFragment : Fragment() {
 					users.add(user)
 				}
 
-				// RecyclerView Adapter 설정
-				val adapter = RecyclerViewUserAdapter(users)
-				dialogBinding.userList.layoutManager = LinearLayoutManager(requireContext())
-				dialogBinding.userList.adapter = adapter
+				// 현재 사용자의 친구 목록 가져오기
+				FirebaseFirestore.getInstance().collection("Friends")
+					.document(currentUserEmail!!)
+					.collection("MyFriends")
+					.get()
+					.addOnSuccessListener { friendSnapshot ->
+						// 친구 목록에서 이미 친구인 이메일들을 가져옵니다.
+						val friendEmails = friendSnapshot.documents.map { it.id }
 
-				// EditText에 TextWatcher 설정
-				dialogBinding.searchView.setOnQueryTextListener(object :
-					SearchView.OnQueryTextListener {
-					override fun onQueryTextSubmit(query: String?): Boolean {
-						return false
+						// RecyclerView Adapter 설정
+						val adapter = RecyclerViewUserAdapter(users.filterNot { user ->
+							friendEmails.contains(user.email) // 이미 친구인 사용자는 필터링합니다.
+						})
+						dialogBinding.userList.layoutManager = LinearLayoutManager(requireContext())
+						dialogBinding.userList.adapter = adapter
+
+						// EditText에 TextWatcher 설정
+						dialogBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+							override fun onQueryTextSubmit(query: String?): Boolean {
+								return false
+							}
+
+							override fun onQueryTextChange(newText: String?): Boolean {
+								// 사용자의 입력에 따라 검색을 수행합니다.
+								adapter.filter.filter(newText)
+								return false
+							}
+						})
+
+						// 다이얼로그 표시
+						alertDialog.show()
+						dialogBinding.cancelButton.setOnClickListener {
+							alertDialog.dismiss() // 다이얼로그 종료
+						}
+					}
+					.addOnFailureListener { e ->
+						// 친구 목록을 가져오지 못한 경우 처리
+						Toast.makeText(requireContext(), "친구 목록을 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
+						Log.e(TAG, "Error fetching friends", e)
 					}
 
-					override fun onQueryTextChange(newText: String?): Boolean {
-						// 사용자의 입력에 따라 검색을 수행합니다.
-						adapter.filter.filter(newText)
-						return false
-					}
-				})
-
-				// 다이얼로그 표시
-				alertDialog.show()
-				dialogBinding.cancelButton.setOnClickListener {
-					alertDialog.dismiss() // 다이얼로그 종료
-				}
 			}
 			.addOnFailureListener { e ->
 				// 파이어스토어에서 사용자 정보를 가져오는데 실패한 경우 처리
