@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
@@ -13,6 +14,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.text.method.LinkMovementMethod
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,6 +23,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.poco.a_day_exercise.databinding.FragmentSearchBinding
 import org.tensorflow.lite.DataType
@@ -41,14 +44,12 @@ import java.util.*
 
 class SearchFragment : Fragment() {
 	val binding by lazy {FragmentSearchBinding.inflate(layoutInflater)}
-	lateinit var cameraPermission:ActivityResultLauncher<String> // 카메라 권한
-	lateinit var storagePermission:ActivityResultLauncher<String> // 저장소 권한
-	lateinit var cameraLauncher: ActivityResultLauncher<Uri> // 카메라 앱 호출
-	lateinit var galleryLauncher: ActivityResultLauncher<String>// 갤러리 앱 호출
+//	private lateinit var cameraPermission:ActivityResultLauncher<Array<String>> // 카메라 권한
+//	private lateinit var storagePermission:ActivityResultLauncher<Array<String>> // 저장소 권한
+//	private lateinit var galleryLauncher: ActivityResultLauncher<Array<String>>// 갤러리 앱 호출
+private lateinit var permissionsLauncher: ActivityResultLauncher<Array<String>>// 권한
 
 	private var photoUri:Uri? = null
-	private var isCameraOpen = false
-	private var isGalleryOpen = false
 
 
 	private val MODEL_PATH = "searchequipment.tflite"
@@ -59,7 +60,7 @@ class SearchFragment : Fragment() {
 			try {
 				val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 					val source = ImageDecoder.createSource(requireContext().contentResolver, imageUri)
-					ImageDecoder.decodeBitmap(source)
+					decodeBitmap(source)
 				} else {
 					MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
 				}
@@ -91,7 +92,7 @@ class SearchFragment : Fragment() {
 			try {
 				val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 					val source = ImageDecoder.createSource(requireContext().contentResolver, imageUri)
-					ImageDecoder.decodeBitmap(source)
+					decodeBitmap(source)
 				} else {
 					MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
 				}
@@ -114,33 +115,66 @@ class SearchFragment : Fragment() {
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View? {
-		// 카메라
-		storagePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted ->
-			if(isGranted) {
-				setViews()
-			} else {
-				Toast.makeText(requireContext(), "외부 저장소 권한을 승힌해야 앱을 사용할 수 있습니다.", Toast.LENGTH_LONG).show()
+		// 버전 체크 해서 permission다르게하기
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+		{
+			val permission = arrayOf(
+				android.Manifest.permission.CAMERA,
+				android.Manifest.permission.READ_MEDIA_IMAGES
+			)
+			// 카메라
+			permissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+				if (permissions[android.Manifest.permission.CAMERA] == true &&
+					permissions[android.Manifest.permission.READ_MEDIA_IMAGES] == true) {
+					binding.camerabutton.setOnClickListener {
+						openCamera()
+					}
+					binding.gallerybutton.setOnClickListener {
+						openGallery()
+					}
+				} else {
+					Toast.makeText(requireContext(), "외부 저장소 권한을 승인해야 앱을 사용할 수 있습니다.", Toast.LENGTH_LONG).show()
+					val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", requireActivity().packageName, null))
+					startActivity(intent)
+				}
 			}
+			permissionsLauncher.launch(permission)
 		}
-		cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted ->
-			if(isGranted) {
-				openCamera()
-			} else{
-				Toast.makeText(requireContext(),
-					"카메라 권한을 승인해야 카메라를 사용할 수 있습니다.",
-					Toast.LENGTH_LONG).show()
+		else {
+			val permission = arrayOf(
+				android.Manifest.permission.CAMERA,
+				android.Manifest.permission.READ_EXTERNAL_STORAGE,
+				android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+			)
+
+			// 카메라
+			permissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+				if (permissions[android.Manifest.permission.CAMERA] == true &&
+					permissions[android.Manifest.permission.READ_EXTERNAL_STORAGE] == true &&
+					permissions[android.Manifest.permission.WRITE_EXTERNAL_STORAGE] == true
+					) {
+					binding.camerabutton.setOnClickListener {
+						openCamera()
+					}
+					binding.gallerybutton.setOnClickListener {
+						openGallery()
+					}
+				} else {
+					Toast.makeText(requireContext(), "외부 저장소 권한을 승인해야 앱을 사용할 수 있습니다.", Toast.LENGTH_LONG).show()
+					val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", requireActivity().packageName, null))
+					startActivity(intent)
+				}
 			}
-		}
-		// 카메라
-
-		// 갤러리
-		galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
-				uri -> binding.imagepreview.setImageURI(uri)
-				initClassifier()
-				getContent.launch("image/*")
+			permissionsLauncher.launch(permission)
 		}
 
-		storagePermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+
+//		// 갤러리
+//		permissionsLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+//				uri -> binding.imagepreview.setImageURI(uri)
+//			initClassifier()
+//			getContent.launch("image/*")
+//		}
 		return binding.root
 	}
 
@@ -242,33 +276,62 @@ class SearchFragment : Fragment() {
 		}
 	}
 
-	private fun setViews() {
-		binding.camerabutton.setOnClickListener {
-			cameraPermission.launch(android.Manifest.permission.CAMERA)
-		}
-		binding.gallerybutton.setOnClickListener {
-			openGallery()
-		}
-	}
+//	private fun setViews() {
+//		binding.camerabutton.setOnClickListener {
+//			cameraPermission.launch(android.Manifest.permission.CAMERA)
+//		}
+//		binding.gallerybutton.setOnClickListener {
+//			openGallery()
+//		}
+//	}
 
 	private fun openCamera() {
-		val photoFile = File.createTempFile(
-			"IMG_",
-			".jpg",
-			requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-		)
-		photoUri = FileProvider.getUriForFile(
-			requireContext(),
-			"com.poco.a_day_exercise.provider",
-			photoFile
-		)
-		initClassifier()
-		takePicture.launch(photoUri)
+		if (hasPermissions()) {
+			val photoFile = File.createTempFile(
+				"IMG_",
+				".jpg",
+				requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+			)
+			photoUri = FileProvider.getUriForFile(
+				requireContext(),
+				"com.poco.a_day_exercise.provider",
+				photoFile
+			)
+			initClassifier()
+			takePicture.launch(photoUri)
+		} else {
+			// 권한이 거절되었을 때 설정으로 이동
+			openAppSettings()
+		}
 	}
 	private fun openGallery() {
-		initClassifier()
-		getContent.launch("image/*")
+		if (hasPermissions()) {
+			initClassifier()
+			getContent.launch("image/*")
+		} else {
+			// 권한이 거절되었을 때 설정으로 이동
+			openAppSettings()
+		}
 	}
 
+	// 권한 확인
+	private fun hasPermissions(): Boolean {
+		return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+					&& ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED)
+		} else {
+			(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+					&& ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+					&& ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+		}
+	}
+
+	// 설정으로 이동
+	private fun openAppSettings() {
+		val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+		val uri = Uri.fromParts("package", requireContext().packageName, null)
+		intent.data = uri
+		startActivity(intent)
+	}
 
 }

@@ -2,5 +2,5 @@
 <style android:name="A_day_exercise"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 다른 스타일 속성들 -->
-    <item android:name="android:windowBackground">@android:color/black</item>
+    <item android:name="android:windowBackground">@android:color/white</item>
 </style>

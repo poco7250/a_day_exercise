@@ -81,10 +81,6 @@ class AddRoutineActivity : AppCompatActivity() {
 			}
 		}
 
-		binding.modifyRoutineName.setOnClickListener {
-
-		}
-
 		binding.modifyRoutine.setOnClickListener {
 			if (selectedItemPosition != -1) {
 				// 선택된 루틴의 위치를 가져와서 사용

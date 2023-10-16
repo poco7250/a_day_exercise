@@ -6,7 +6,7 @@
 
     <style name="AppTheme">
         <!-- 다른 스타일 속성들 -->
-        <item name="android:windowBackground">@drawable/your_background_image</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
     <style name="SelectedBottomNavigationText">
@@ -21,6 +21,7 @@
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/splashscreen</item>
         <item name="postSplashScreenTheme">@style/Theme.A_day_exercise</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
     <style name="some_id">

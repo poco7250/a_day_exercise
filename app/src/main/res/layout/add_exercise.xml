@@ -7,22 +7,22 @@
 
     <TextView
         android:id="@+id/exerciseName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
+        android:layout_width="76dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:text="운동 추가"
-        android:textSize="20sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/insertExerciseName"
-        android:layout_width="359dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="26dp"
+        android:layout_width="339dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="26dp"
-        android:layout_marginEnd="26dp"
+        android:layout_marginEnd="30dp"
         android:ems="10"
         android:hint="운동 이름 ex)스쿼트"
         android:inputType="text"
@@ -34,7 +34,7 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
         android:text="세트. 무게, 횟수를 알려주세요"
         android:textSize="20sp"
@@ -43,9 +43,9 @@
 
     <EditText
         android:id="@+id/numOfSet"
-        android:layout_width="149dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="26dp"
+        android:layout_width="130dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="세트 수"
@@ -55,10 +55,10 @@
 
     <EditText
         android:id="@+id/weightuser"
-        android:layout_width="161dp"
-        android:layout_height="49dp"
+        android:layout_width="142dp"
+        android:layout_height="47dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="26dp"
+        android:layout_marginEnd="30dp"
         android:ems="10"
         android:hint="무게(kg)"
         android:inputType="number"
@@ -79,8 +79,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exerciseRecyclerView"
-        android:layout_width="406dp"
-        android:layout_height="196dp"
+        android:layout_width="342dp"
+        android:layout_height="189dp"
         android:layout_marginTop="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,10 +120,12 @@
         android:id="@+id/mrnButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="37dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="26dp"
         android:text="루틴 이름 수정"
         app:layout_constraintEnd_toStartOf="@+id/successButton1"
+        app:layout_constraintStart_toEndOf="@+id/exerciseName"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

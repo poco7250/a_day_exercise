@@ -9,7 +9,7 @@
         android:id="@+id/routineName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="50dp"
         android:text="루틴 추가"
         android:textSize="20sp"
@@ -18,8 +18,8 @@
 
     <EditText
         android:id="@+id/insertRoutineName"
-        android:layout_width="359dp"
-        android:layout_height="59dp"
+        android:layout_width="305dp"
+        android:layout_height="53dp"
         android:layout_marginStart="26dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="26dp"
@@ -32,11 +32,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/routineRecyclerView"
-        android:layout_width="412dp"
-        android:layout_height="387dp"
+        android:layout_width="321dp"
+        android:layout_height="336dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="1dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/insertRoutineName" />
 
@@ -44,9 +45,9 @@
         android:id="@+id/addExerciseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="430dp"
-        android:layout_marginEnd="20dp"
-        android:text="운동 추가"
+        android:layout_marginTop="400dp"
+        android:layout_marginEnd="40dp"
+        android:text="루틴 생성"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/insertRoutineName" />
 
@@ -54,8 +55,8 @@
         android:id="@+id/modifyRoutine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="430dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="400dp"
         android:text="루틴 수정"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/insertRoutineName" />
@@ -65,18 +66,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="41dp"
-        android:layout_marginEnd="26dp"
+        android:layout_marginEnd="40dp"
         android:text="완료"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/modifyRoutineName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="430dp"
-        android:text="루틴 이름 변경"
-        app:layout_constraintEnd_toStartOf="@+id/addExerciseButton"
-        app:layout_constraintStart_toEndOf="@+id/modifyRoutine"
-        app:layout_constraintTop_toBottomOf="@+id/insertRoutineName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

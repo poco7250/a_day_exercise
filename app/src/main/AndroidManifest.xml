@@ -7,12 +7,15 @@
     <uses-feature android:name="android.hardware.type.watch" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VEDIO" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.WRITE_MEDIA_VEDIO" />
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -24,7 +27,7 @@
         android:label="하루운동"
         android:supportsRtl="true"
         android:theme="@style/Theme.A_day_exercise"
-        tools:targetApi="34">
+        tools:targetApi="33">
         <activity
             android:name=".DateActivity"
             android:exported="false" />

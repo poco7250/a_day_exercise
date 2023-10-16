@@ -38,7 +38,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="5dp"
         android:text="이메일"
-        android:textColor="#8A252525"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/home_item_iv"
         app:layout_constraintTop_toBottomOf="@+id/home_item_tv" />

@@ -11,10 +11,10 @@
         android:layout_width="242dp"
         android:layout_height="92dp"
         android:layout_gravity="center"
-        android:layout_marginStart="21dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="32dp"
         android:text="오늘의 운동 통계를\n확인해보세요!"
-        android:textColor="#000000"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,13 +22,12 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerstatistics"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="332dp"
+        android:layout_height="391dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tabLayoutstatistics" />
 
@@ -36,7 +35,7 @@
         android:id="@+id/tabLayoutstatistics"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="200dp"
         app:layout_constraintBottom_toTopOf="@+id/viewPagerstatistics"
         app:layout_constraintStart_toStartOf="parent"

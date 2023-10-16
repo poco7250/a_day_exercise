@@ -19,8 +19,8 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpagerfriend"
-        android:layout_width="match_parent"
-        android:layout_height="541dp"
+        android:layout_width="320dp"
+        android:layout_height="463dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,7 +32,7 @@
         android:id="@+id/taplayoutfriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="200dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/friendrecord">

@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="17dp"
         android:text="루틴 이름"
+        android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
