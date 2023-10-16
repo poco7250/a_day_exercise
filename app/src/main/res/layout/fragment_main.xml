@@ -6,14 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".MainFragment">
 
+    <!--
+    Font family: Noto Sans KR
+    Line height: 46sp
+    -->
+
+
     <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:id="@+id/maintext"
+        android:layout_width="348dp"
+        android:layout_height="92dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="64dp"
-        android:text="하루운동"
-        android:textSize="24sp"
+        android:gravity="top"
+        android:textAppearance="@style/maintext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,11 +29,11 @@
         android:id="@+id/startExercise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="64dp"
         android:text="운동 추가하기"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/maintext" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainrcview"

@@ -27,4 +27,19 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">From the Square world,\nHello, %1$s!</string>
+    <string name="some_id">
+        당신의 운동을 기록해 보세요.
+    </string>
+
+    <string name="maintext">
+        %1$s 님! 오늘도\n하루 운동을 시작해보세요!
+    </string>
+
+    <string name="datetext">
+        %1$s 일 운동기록
+    </string>
+
+    <string name="friendrecord">
+        %1$s 님의 운동기록
+    </string>
 </resources>

@@ -1,27 +1,27 @@
 package com.poco.a_day_exercise
 
+import com.poco.a_day_exercise.R
+import android.R.string
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.poco.a_day_exercise.databinding.FragmentMainBinding
 import com.poco.a_day_exercise.databinding.ItemExerciseBinding
-import com.poco.a_day_exercise.databinding.ItemRoutineBinding
 import com.poco.a_day_exercise.databinding.MainRoutineBinding
+
 
 class RoutineComponent(
 	val rtname: String? = null,
@@ -55,6 +55,13 @@ class MainFragment : Fragment() {
 	// 다른 함수에서 사용할 수 있도록 클래스 레벨 변수로 rtname 저장
 	private var selectedRoutineName: String? = null
 
+	// Firebase Authentication 초기화
+	private val auth = FirebaseAuth.getInstance()
+	private val currentUser = auth.currentUser
+
+	// Firebase Firestore 초기화
+	private val db = FirebaseFirestore.getInstance()
+
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -84,6 +91,15 @@ class MainFragment : Fragment() {
 			val intent = Intent(activity,  RecordWatchActivity::class.java)
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 			startActivity(intent)
+		}
+
+		usernamereturn { userName->
+			val maintext = getString(R.string.maintext, userName)
+
+			if (userName != null)
+			{
+				binding.maintext.text = maintext
+			}
 		}
 
 		// 파이어스토어에서 데이터 불러오기
@@ -267,6 +283,38 @@ class MainFragment : Fragment() {
 			.addOnFailureListener { exception ->
 				Log.d("loadExerciseData", "Error getting documents: ", exception)
 			}
+	}
+
+	private fun usernamereturn(callback: (String?) -> Unit)
+	{
+		if (currentUser != null) {
+			// 현재 로그인된 사용자의 이메일 가져오기
+			val userEmail = currentUser.email
+
+			if (userEmail != null) {
+				// Users 컬렉션에서 이메일이 현재 사용자의 이메일과 일치하는 사용자 찾기
+				db.collection("Users")
+					.whereEqualTo("email", userEmail)
+					.get()
+					.addOnSuccessListener { documents ->
+						for (document in documents) {
+							// 사용자의 이름 필드("name") 가져오기
+							val userName = document.getString("name")
+							callback(userName) // 콜백 함수 호출하여 이름 전달
+						}
+					}
+					.addOnFailureListener { exception ->
+						// 데이터를 가져오지 못한 경우 처리
+						callback(null) // 실패 시 null을 전달
+					}
+			} else {
+				// 사용자 이메일이 null인 경우 처리
+				callback(null) // 실패 시 null을 전달
+			}
+		} else {
+			// 사용자가 로그인되어 있지 않은 경우 처리
+			callback(null) // 실패 시 null을 전달
+		}
 	}
 
 }

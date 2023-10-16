@@ -1,6 +1,8 @@
 package com.poco.a_day_exercise
 
 import android.os.Bundle
+import android.util.Log
+import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.auth.FirebaseAuth
@@ -8,7 +10,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.poco.a_day_exercise.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
+
 	private lateinit var auth: FirebaseAuth
 	val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -18,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 		// Initialize Firebase Auth
 		auth = Firebase.auth
 
-		val fragmentList = listOf(MainFragment(), StatisticsFragment(), SearchFragment(), AddFriendFragment(), SettingFragment())
+		val fragmentList = listOf(StatisticsFragment(), SearchFragment(), MainFragment(), AddFriendFragment(), SettingFragment())
 		val adapter = FragmentAdapter(this)
 		adapter.fragmentList = fragmentList
 		binding.viewPager.adapter = adapter
@@ -30,18 +33,21 @@ class MainActivity : AppCompatActivity() {
 				binding.bnview.menu.getItem(position).isChecked = true
 			}
 		})
+
+		binding.viewPager.setCurrentItem(2, false)
+
 		// BottomNavigationView의 선택 이벤트 처리
 		binding.bnview.setOnItemSelectedListener { menuItem ->
 			when (menuItem.itemId) {
-				R.id.home -> {
+				R.id.statistics -> {
 					binding.viewPager.currentItem = 0
 					true
 				}
-				R.id.statistics -> {
+				R.id.search -> {
 					binding.viewPager.currentItem = 1
 					true
 				}
-				R.id.search -> {
+				R.id.home -> {
 					binding.viewPager.currentItem = 2
 					true
 				}

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/home"
-        android:icon="@drawable/home"
-        android:title="@string/home" />
-    <item
         android:id="@+id/statistics"
         android:icon="@drawable/statistics"
         android:title="@string/statistics" />
@@ -12,6 +8,11 @@
         android:id="@+id/search"
         android:icon="@drawable/search"
         android:title="@string/search" />
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:title="@string/home"
+        android:checked="true"/>
     <item
         android:id="@+id/friend"
         android:icon="@drawable/friend"

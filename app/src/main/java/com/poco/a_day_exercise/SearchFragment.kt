@@ -3,6 +3,7 @@ package com.poco.a_day_exercise
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
@@ -12,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.method.LinkMovementMethod
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +69,13 @@ class SearchFragment : Fragment() {
 
 				// 분류 결과 출력
 				val resultStr = String.format(Locale.ENGLISH, "%s", result.first)
+				binding.textResult.movementMethod = LinkMovementMethod.getInstance()
 				binding.textResult.text = resultStr // 수정된 부분
+				binding.textResult.setOnClickListener {
+					val query = resultStr // 원하는 검색어 입력
+					val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query=$query"))
+					startActivity(intent)
+				}
 				binding.imagepreview.setImageURI(imageUri)
 
 			} catch (e: IOException) {

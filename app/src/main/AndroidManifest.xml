@@ -7,8 +7,12 @@
     <uses-feature android:name="android.hardware.type.watch" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -16,15 +20,36 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@mipmap/icon"
+        android:label="하루운동"
         android:supportsRtl="true"
         android:theme="@style/Theme.A_day_exercise"
         tools:targetApi="34">
-
         <activity
             android:name=".DateActivity"
             android:exported="false" />
+        <activity
+            android:name=".CalendarFragmentAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".FriendInformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SharedViewModel"
+            android:exported="false" />
+        <activity
+            android:name=".InnerFragmentAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".SelectMenuActivity"
+            android:exported="true"
+            android:theme="@style/Theme.App.Starting">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".RecordWatchActivity"
             android:exported="false" />
@@ -32,23 +57,14 @@
             android:name=".RecordTextActivity"
             android:exported="false" />
         <activity
-            android:name=".RecordActivity"
-            android:exported="false" />
-        <activity
             android:name=".ModifyRoutineNameActivity"
             android:exported="false" />
         <activity
-            android:name=".signupActivity"
+            android:name=".SignupActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />

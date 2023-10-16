@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="skyblue">#03A9F4</color>
+
+    <color name="selected_color">#03A9F4</color> <!-- 원하는 선택된 색상으로 변경 -->
+    <color name="unselected_color">#C8959393</color> <!-- 선택되지 않은 색상을 원하는 색상으로 변경 -->
 </resources>

@@ -4,58 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StatisticsFragment">
+    tools:context=".FriendInformationActivity">
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="242dp"
-        android:layout_height="92dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="32dp"
-        android:text="오늘의 운동 통계를\n확인해보세요!"
-        android:textColor="#000000"
+        android:id="@+id/friendrecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="운동기록"
         android:textSize="24sp"
-        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPagerstatistics"
+        android:id="@+id/viewpagerfriend"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="541dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayoutstatistics" />
+        app:layout_constraintTop_toBottomOf="@+id/taplayoutfriend" />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayoutstatistics"
+        android:id="@+id/taplayoutfriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="200dp"
-        app:layout_constraintBottom_toTopOf="@+id/viewPagerstatistics"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/friendrecord">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="통계"
-            tools:layout_editor_absoluteX="34dp"
-            tools:layout_editor_absoluteY="274dp" />
+            tools:layout_editor_absoluteX="14dp"
+            tools:layout_editor_absoluteY="174dp" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="기록"
-            tools:layout_editor_absoluteX="91dp"
-            tools:layout_editor_absoluteY="187dp" />
-
+            android:text="기록" />
     </com.google.android.material.tabs.TabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

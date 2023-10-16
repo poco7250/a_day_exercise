@@ -129,6 +129,7 @@ class SettingFragment : Fragment() {
 		if (imageUrl != null) {
 			Glide.with(this)
 				.load(imageUrl)
+				.circleCrop()
 				.into(binding.imageView)
 		}
 	}

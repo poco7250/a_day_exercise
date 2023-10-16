@@ -7,12 +7,11 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.poco.a_day_exercise.databinding.ActivitySignupBinding
 
-class signupActivity : AppCompatActivity() {
+class SignupActivity : AppCompatActivity() {
 	private lateinit var auth: FirebaseAuth
 	val binding by lazy { ActivitySignupBinding.inflate((layoutInflater)) } // 뷰바인딩 설정
 

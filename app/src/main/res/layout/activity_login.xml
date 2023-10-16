@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <Button
+    <ImageButton
         android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:text="로그인"
+        android:layout_width="343dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PasswordText" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googleLoginButton"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_width="343dp"
+        android:layout_height="56dp"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -28,9 +28,9 @@
 
     <EditText
         android:id="@+id/emailText"
-        android:layout_width="210dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="161dp"
+        android:layout_width="343dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="280dp"
         android:autofillHints="emailAddress"
         android:ems="10"
         android:hint="email"
@@ -41,9 +41,9 @@
 
     <EditText
         android:id="@+id/PasswordText"
-        android:layout_width="211dp"
-        android:layout_height="61dp"
-        android:layout_marginTop="53dp"
+        android:layout_width="343dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
         android:autofillHints="Password"
         android:ems="10"
         android:hint="password"
@@ -53,34 +53,14 @@
         app:layout_constraintTop_toBottomOf="@+id/emailText"
         tools:ignore="LabelFor" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="180dp"
-        android:text="이메일"
-        app:layout_constraintEnd_toStartOf="@+id/emailText"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="비밀번호"
-        app:layout_constraintEnd_toStartOf="@+id/PasswordText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Button
-        android:id="@+id/signup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="62dp"
-        android:text="회원가입"
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="241dp"
+        android:layout_height="222dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/googleLoginButton" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/adayexercise" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

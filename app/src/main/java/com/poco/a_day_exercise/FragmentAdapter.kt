@@ -14,9 +14,9 @@ class FragmentAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter
 
 	override fun createFragment(position: Int): Fragment {
 		return when (position) {
-			0 -> MainFragment()
-			1 -> StatisticsFragment()
-			2 -> SearchFragment()
+			0 -> StatisticsFragment()
+			1 -> SearchFragment()
+			2 -> MainFragment()
 			3 -> AddFriendFragment()
 			else -> SettingFragment()
 		}

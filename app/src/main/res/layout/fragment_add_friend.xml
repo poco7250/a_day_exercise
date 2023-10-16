@@ -9,8 +9,9 @@
     tools:context=".AddFriendFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="92dp"
+        android:layout_width="414dp"
+        android:layout_height="140dp"
+        android:background="#007AFF"
         android:orientation="horizontal"
         android:paddingTop="8dp">
 
@@ -18,34 +19,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="40dp"
             android:fontFamily="cursive"
-            android:text="친구"
-            android:textColor="@color/black"
+            android:text="친구 목록"
+            android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <ImageButton
             android:id="@+id/checkRequest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_gravity="bottom"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="40dp"
+            android:background="#00FFFFFF"
+            android:src="@drawable/fui_ic_mail_white_24dp"
             android:text="보관함"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/addFriendButton" />
 
-        <Button
+        <ImageButton
             android:id="@+id/addFriendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_gravity="bottom"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="40dp"
+            android:background="#00FFFFFF"
+            android:src="@drawable/user_plus"
             android:text="친구추가"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

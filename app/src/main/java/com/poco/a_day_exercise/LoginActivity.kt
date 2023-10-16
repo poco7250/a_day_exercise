@@ -1,15 +1,22 @@
 package com.poco.a_day_exercise
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.animation.AccelerateInterpolator
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.auth.api.Auth
+import androidx.core.animation.doOnEnd
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
@@ -29,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
 	private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
 	private var googleSignInClient : GoogleSignInClient? = null
 
+	@RequiresApi(Build.VERSION_CODES.S)
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
@@ -40,11 +48,6 @@ class LoginActivity : AppCompatActivity() {
 			.requestEmail()
 			.build()
 		googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-		// 회원가입 버튼
-		binding.signup.setOnClickListener {
-			startActivity(Intent(this,signupActivity::class.java))
-		}
 
 		// 로그인 버튼
 		binding.loginButton.setOnClickListener {
@@ -176,4 +179,5 @@ class LoginActivity : AppCompatActivity() {
 				}
 			}
 	}
+
 }

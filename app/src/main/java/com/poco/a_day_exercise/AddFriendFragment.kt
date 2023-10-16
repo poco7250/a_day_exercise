@@ -2,6 +2,7 @@ package com.poco.a_day_exercise
 
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -97,14 +99,20 @@ class AddFriendFragment : Fragment() {
 						val friends = mutableListOf<Friend>()
 						for (document in snapshot.documents) {
 							val friendEmail = document.getString("email")
+							Log.d("friendemailcheck", friendEmail!!)
 							friendEmail?.let { friendEmails.add(it) }
 						}
 
 						// 가져온 친구 이메일 리스트를 사용하여 "Users" 컬렉션에서 친구들의 정보를 가져옵니다.
 						val usersCollection = FirebaseFirestore.getInstance().collection("Users")
 
+						// 중복된 친구 이메일을 제거한 후 사용자 문서를 조회합니다.
+						val distinctFriendEmails = friendEmails.distinct()
+
+						Log.d("friendemailcheck2", distinctFriendEmails.toString())
+
 						// 친구들의 이메일과 일치하는 사용자 문서를 조회합니다.
-						for (friendEmail in friendEmails) {
+						for (friendEmail in distinctFriendEmails) {
 							usersCollection.whereEqualTo("email", friendEmail)
 								.get()
 								.addOnSuccessListener { querySnapshot ->
@@ -112,6 +120,7 @@ class AddFriendFragment : Fragment() {
 									for (document in querySnapshot) {
 										val friend = document.toObject<Friend>()
 										friends.add(friend)
+										Log.d("friendemailcheck3", friend.email!!)
 									}
 
 									// RecyclerView Adapter 설정
@@ -231,7 +240,13 @@ class AddFriendFragment : Fragment() {
 				holder.textViewEmail.text = currentItem.email
 				holder.imageView.visibility = View.VISIBLE
 				holder.information.setOnClickListener {
-					// 아직 미구현
+					// 친구의 정보를 보여주는 액티비티로 이동
+					val intent = Intent(requireContext(), FriendInformationActivity::class.java)
+					intent.putExtra("useremail", currentItem.email)
+					intent.putExtra("username", currentItem.name)
+					Log.d("setemail",currentItem.email!!)
+					setUseremail(currentItem.email!!)
+					startActivity(intent)
 				}
 			}
 		}
@@ -753,5 +768,8 @@ class AddFriendFragment : Fragment() {
 				// 쿼리 실패에 대한 처리
 				Log.e(TAG, "Error querying friend request", e)
 			}
+	}
+	private fun setUseremail(email: String) {
+		FriendRecordFragment.setUseremail(email)
 	}
 }

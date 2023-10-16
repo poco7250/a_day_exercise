@@ -8,4 +8,42 @@
         <!-- 다른 스타일 속성들 -->
         <item name="android:windowBackground">@drawable/your_background_image</item>
     </style>
+
+    <style name="SelectedBottomNavigationText">
+        <item name="android:textColor">@color/selected_color</item>
+    </style>
+
+    <style name="UnselectedBottomNavigationText">
+        <item name="android:textColor">@color/unselected_color</item>
+    </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/splashscreen</item>
+        <item name="postSplashScreenTheme">@style/Theme.A_day_exercise</item>
+    </style>
+
+    <style name="some_id">
+        <item name="android:textSize">36sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="maintext">
+        <item name="android:textSize">32sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:textColor">#007AFF</item>
+    </style>
+
+    <style name="myNameText">
+        <item name="android:textSize">28sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:textColor">#0089EC</item>
+    </style>
+
+    <style name="searchex">
+        <item name="android:textSize">21sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:textColor">#5F5F5F</item>
+    </style>
 </resources>
