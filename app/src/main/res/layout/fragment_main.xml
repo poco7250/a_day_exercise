@@ -64,4 +64,16 @@
         android:text="워치로 기록하기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageButton
+        android:id="@+id/refreshButton"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginTop="10dp"
+        android:background="#00FFFFFF"
+        android:src="@drawable/refresh"
+        app:layout_constraintStart_toEndOf="@+id/startExercise"
+        app:layout_constraintTop_toBottomOf="@+id/maintext" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

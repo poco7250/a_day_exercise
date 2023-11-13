@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -81,6 +82,14 @@ class MainFragment : Fragment() {
 			startActivity(intent)
 		}
 
+		binding.refreshButton.setOnClickListener {
+			// 버튼을 클릭하면 데이터를 다시 불러오고 리사이클러뷰를 업데이트
+			temporaryRoutineComponent.clear() // 기존 데이터 초기화
+			routineNamesList.clear()
+			loadRoutineNames()
+			Toast.makeText(requireContext(), "새로고침이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+		}
+
 		binding.recordTextButton.setOnClickListener {
 			val intent = Intent(activity, DateActivity::class.java)
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -145,7 +154,7 @@ class MainFragment : Fragment() {
 				val selectedRoutineName = clickedItem.rtname // 예: 루틴 이름
 
 				val intent = Intent(holder.itemView.context, AddExerciseActivity::class.java)
-				intent.putExtra("RoutineName", selectedRoutineName)
+				intent.putExtra("selectedRoutine", selectedRoutineName)
 
 				holder.itemView.context.startActivity(intent)
 			}
