@@ -89,20 +89,20 @@ class SettingFragment : Fragment() {
 			logout()
 		}
 
-		// 회원 탈퇴 버튼
-		binding.withdrawButton.setOnClickListener {
-			val alertDialogBuilder = AlertDialog.Builder(requireContext())
-			alertDialogBuilder.setMessage("삭제하시겠습니까?")
-			alertDialogBuilder.setPositiveButton("예") { dialog, which ->
-				membershipWithdrawl(currentUserEmail!!)
-			}
-			alertDialogBuilder.setNegativeButton("아니오") { dialog, which ->
-				// 아무 작업도 하지 않고 다이얼로그 닫기
-				dialog.dismiss()
-			}
-			val alertDialog = alertDialogBuilder.create()
-			alertDialog.show()
-		}
+//		// 회원 탈퇴 버튼
+//		binding.withdrawButton.setOnClickListener {
+//			val alertDialogBuilder = AlertDialog.Builder(requireContext())
+//			alertDialogBuilder.setMessage("삭제하시겠습니까?")
+//			alertDialogBuilder.setPositiveButton("예") { dialog, which ->
+//				membershipWithdrawl(currentUserEmail!!)
+//			}
+//			alertDialogBuilder.setNegativeButton("아니오") { dialog, which ->
+//				// 아무 작업도 하지 않고 다이얼로그 닫기
+//				dialog.dismiss()
+//			}
+//			val alertDialog = alertDialogBuilder.create()
+//			alertDialog.show()
+//		}
 
 
 		return binding.root

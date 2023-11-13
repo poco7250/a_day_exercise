@@ -91,12 +91,12 @@ class AddExerciseActivity : AppCompatActivity() {
 			finish()
 		}
 
-		binding.mrnButton.setOnClickListener {
-			// 다음 액티비티로 전달
-			val intent = Intent(this, ModifyRoutineNameActivity::class.java)
-			intent.putExtra("RoutineName", rtname)
-			startActivity(intent)
-		}
+//		binding.mrnButton.setOnClickListener {
+//			// 다음 액티비티로 전달
+//			val intent = Intent(this, ModifyRoutineNameActivity::class.java)
+//			intent.putExtra("RoutineName", rtname)
+//			startActivity(intent)
+//		}
 
 		binding.root.setOnClickListener {
 			selectedItemPosition = -1 // 선택 해제

@@ -1,6 +1,7 @@
 package com.poco.a_day_exercise
 
 import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +16,9 @@ import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -128,6 +131,26 @@ class AddFriendFragment : Fragment() {
 									binding.homeUserList.layoutManager =
 										LinearLayoutManager(requireContext())
 									binding.homeUserList.adapter = adapter
+
+									// ItemTouchHelper 및 FriendListItemHelper 인스턴스 생성
+									val friendlistitemhelper = FriendListItemHelper(requireContext()).apply {
+										setClamp(235f)
+									}
+									val itemTouchHelper = ItemTouchHelper(friendlistitemhelper)
+									itemTouchHelper.attachToRecyclerView(binding.homeUserList)
+
+									binding.homeUserList.apply {
+										val adapter = RecyclerViewFriendAdapter(friends)
+										binding.homeUserList.layoutManager =
+											LinearLayoutManager(requireContext())
+										binding.homeUserList.adapter = adapter
+
+										// 터치 리스너 설정
+										setOnTouchListener { v, event ->
+											friendlistitemhelper.removePreviousClamp(binding.homeUserList)
+											false
+										}
+									}
 									adapter.notifyDataSetChanged()
 								}
 								.addOnFailureListener { e ->
@@ -156,7 +179,7 @@ class AddFriendFragment : Fragment() {
 
 		// filter를 관리할 mutableList 정의
 		private val filteredItems: MutableList<Person> = mutableListOf()
-		private val itemFilter = ItemFilter()
+//		private val itemFilter = ItemFilter()
 
 		init {
 
@@ -212,10 +235,12 @@ class AddFriendFragment : Fragment() {
 
 		inner class CustomViewHolder(private val binding: ItemFriendBinding) :
 			RecyclerView.ViewHolder(binding.root) {
+			val swipelayout: ConstraintLayout = binding.ConstraintLayoutSwipe
 			val imageView: ImageView = binding.homeItemIv
 			val textView: TextView = binding.homeItemTv
 			val textViewEmail: TextView = binding.homeItemEmail
 			val information: Button = binding.information
+			val deletefriend: Button = binding.deleteFriendButton
 		}
 
 		fun updateData(newItems: List<Friend>) {
@@ -239,14 +264,47 @@ class AddFriendFragment : Fragment() {
 				holder.textView.text = currentItem.name
 				holder.textViewEmail.text = currentItem.email
 				holder.imageView.visibility = View.VISIBLE
+				holder.deletefriend.visibility = View.VISIBLE
 				holder.information.setOnClickListener {
 					// 친구의 정보를 보여주는 액티비티로 이동
 					val intent = Intent(requireContext(), FriendInformationActivity::class.java)
 					intent.putExtra("useremail", currentItem.email)
 					intent.putExtra("username", currentItem.name)
-					Log.d("setemail",currentItem.email!!)
+					Log.d("setemail", currentItem.email!!)
 					setUseremail(currentItem.email!!)
 					startActivity(intent)
+				}
+				// 삭제 버튼 클릭 리스너 설정
+				holder.deletefriend.setOnClickListener {
+					val alertDialogBuilder = AlertDialog.Builder(requireContext())
+					alertDialogBuilder.setMessage("삭제하시겠습니까?")
+					alertDialogBuilder.setPositiveButton("예") { dialog, which ->
+						// 해당 아이템을 삭제합니다.
+						Log.d("deleteButtoncheck","버튼이 눌렸습니다.")
+						val firestore = FirebaseFirestore.getInstance()
+						val currentUserEmail = Firebase.auth.currentUser?.email
+						if (currentUserEmail != null) {
+							firestore.collection("Friends")
+								.document(currentUserEmail)
+								.collection("MyFriends")
+								.document(currentItem.email!!)
+								.delete()
+								.addOnSuccessListener {
+									Log.d("deleteFriend", "친구 삭제를 완료하였습니다.")
+								}
+								.addOnFailureListener { e ->
+									Log.e("deleteFriend", "친구 삭제에 실패하였습니다.", e)
+								}
+						} else {
+							Log.d("currentUserEmailError", "이메일이 비어있습니다.")
+						}
+					}
+					alertDialogBuilder.setNegativeButton("아니오") { dialog, which ->
+						// 아무 작업도 하지 않고 다이얼로그 닫기
+						dialog.dismiss()
+					}
+					val alertDialog = alertDialogBuilder.create()
+					alertDialog.show()
 				}
 			}
 		}
@@ -259,6 +317,7 @@ class AddFriendFragment : Fragment() {
 		override fun getFilter(): Filter {
 			return ItemFilter()
 		}
+
 	}
 
 	inner class RecyclerViewRequestsAdapter(private var items: List<FriendRequest>) :

@@ -278,7 +278,7 @@ class RecordTextActivity : AppCompatActivity() {
 	private val onBackPressedCallback = object : OnBackPressedCallback(true) {
 		override fun handleOnBackPressed() {
 			// 뒤로가기 시 실행할 코드
-			Toast.makeText(this@RecordTextActivity, "완료 버튼을 눌러주세요.", Toast.LENGTH_SHORT).show()
+			Toast.makeText(this@RecordTextActivity, "취소 버튼을 눌러주세요.", Toast.LENGTH_SHORT).show()
 		}
 	}
 }

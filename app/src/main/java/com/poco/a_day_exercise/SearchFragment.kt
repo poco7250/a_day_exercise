@@ -44,10 +44,7 @@ import java.util.*
 
 class SearchFragment : Fragment() {
 	val binding by lazy {FragmentSearchBinding.inflate(layoutInflater)}
-//	private lateinit var cameraPermission:ActivityResultLauncher<Array<String>> // 카메라 권한
-//	private lateinit var storagePermission:ActivityResultLauncher<Array<String>> // 저장소 권한
-//	private lateinit var galleryLauncher: ActivityResultLauncher<Array<String>>// 갤러리 앱 호출
-private lateinit var permissionsLauncher: ActivityResultLauncher<Array<String>>// 권한
+	private lateinit var permissionsLauncher: ActivityResultLauncher<Array<String>>// 권한
 
 	private var photoUri:Uri? = null
 
@@ -103,6 +100,11 @@ private lateinit var permissionsLauncher: ActivityResultLauncher<Array<String>>/
 				// 분류 결과 출력
 				val resultStr = String.format(Locale.ENGLISH, "%s", result.first)
 				binding.textResult.text = resultStr // 수정된 부분
+				binding.textResult.setOnClickListener {
+					val query = resultStr // 원하는 검색어 입력
+					val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query=$query"))
+					startActivity(intent)
+				}
 				binding.imagepreview.setImageURI(photoUri)
 			} catch (e: IOException) {
 				Toast.makeText(requireContext(), "이미지를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
@@ -167,14 +169,6 @@ private lateinit var permissionsLauncher: ActivityResultLauncher<Array<String>>/
 			}
 			permissionsLauncher.launch(permission)
 		}
-
-
-//		// 갤러리
-//		permissionsLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
-//				uri -> binding.imagepreview.setImageURI(uri)
-//			initClassifier()
-//			getContent.launch("image/*")
-//		}
 		return binding.root
 	}
 
@@ -275,15 +269,6 @@ private lateinit var permissionsLauncher: ActivityResultLauncher<Array<String>>/
 			Toast.makeText(requireContext(), "분류기를 초기화할 수 없습니다.", Toast.LENGTH_SHORT).show()
 		}
 	}
-
-//	private fun setViews() {
-//		binding.camerabutton.setOnClickListener {
-//			cameraPermission.launch(android.Manifest.permission.CAMERA)
-//		}
-//		binding.gallerybutton.setOnClickListener {
-//			openGallery()
-//		}
-//	}
 
 	private fun openCamera() {
 		if (hasPermissions()) {
