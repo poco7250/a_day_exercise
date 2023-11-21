@@ -71,7 +71,8 @@ class SearchFragment : Fragment() {
 				binding.textResult.text = resultStr // 수정된 부분
 				binding.textResult.setOnClickListener {
 					val query = resultStr // 원하는 검색어 입력
-					val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/results?search_query=$query"))
+					val intent = Intent(Intent.ACTION_VIEW,
+						Uri.parse("https://www.youtube.com/results?search_query=$query"))
 					startActivity(intent)
 				}
 				binding.imagepreview.setImageURI(imageUri)
