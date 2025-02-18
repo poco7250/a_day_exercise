@@ -11,6 +11,7 @@
 - 사진으로 운동기구 검색
 - 일, 월, 년 별 운동 시간 확인 및 운동 기록 확인
 - 친구 추가
+- watch 기기 전용 웹앱 (타이머)
 
 ## ⚒️ 개발 환경 및 사용 기술
 [기술]
@@ -23,4 +24,14 @@
 <br><br>
 <img src="https://img.shields.io/badge/androidstudio-3DDC84?style=for-the-badge&logo=androidstudio&logoColor=white">
 <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
-<img src="https://img.shields.io/badge/tizenstudio-000000?style=for-the-badge&logo=firebase&logoColor=white">
+<img src="https://img.shields.io/badge/tizenstudio-000000?style=for-the-badge&logo=tizenstudio&logoColor=white">
+
+## 참고 이미지
+<img src="https://github.com/user-attachments/assets/0823d499-c940-4752-8127-f85b5ff4a711" width = "400" height = "200">
+<img src="https://github.com/user-attachments/assets/a11327f5-227c-4aee-b5b9-4166667fad8c" width = "200" height = "200">
+<br>
+<img src="https://github.com/user-attachments/assets/d5827266-278a-4ee9-b67f-68e6a36c98c6" width = "200" height = "400">
+<img src="https://github.com/user-attachments/assets/2bda8260-2ac8-46d7-9292-d980cc2f2e4d" width = "200" height = "400">
+<img src="https://github.com/user-attachments/assets/0ec6c435-ef4b-4667-b656-16585fc00d2a" width = "200" height = "400">
+<img src="https://github.com/user-attachments/assets/8fe61b5b-d78a-4569-b55c-6cd3fb99de70" width = "200" height = "400">
+<br>
