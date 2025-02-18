@@ -17,6 +17,10 @@
 <br><br>
 <img src="https://img.shields.io/badge/kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white">
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
-
+<img src="https://img.shields.io/badge/json-000000?style=for-the-badge&logo=json&logoColor=white">
+<br><br>
 [개발 환경]
-
+<br><br>
+<img src="https://img.shields.io/badge/androidstudio-3DDC84?style=for-the-badge&logo=androidstudio&logoColor=white">
+<img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
+<img src="https://img.shields.io/badge/tizenstudio-000000?style=for-the-badge&logo=firebase&logoColor=white">
